@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/color.css">
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+        
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+
+        input.form-fixer 
+        {
+            color: beige;
+            font-weight: bold;
+            text-align: center;
+            border: solid;
+            border-radius: 5px;
+            width: 27px;
+        }
+    </style>
+    <title>Card</title>
+</head>
+<body>
+    <div class="container">
+        <nav></nav>
+        <br>
+        <div id="display" class="row">
+            <div class="col-3 mb-3">
+                <div class="card-deck ">
+                    <div class='card border-dark h-100'>
+                        <div class='card-header'>
+                            <div class='row'>
+                                <div class='col-7'>
+                                    <h5 class="card-title">
+                                        <input type="text" id="name" class="form-control" placeholder="Nom">
+                                    </h5>
+                                    <h6 class='card-subtitle text-muted'>
+                                        <select class="form-control" id="class"></select>
+                                    </h6>
+                                </div>
+                                <div class='col-5' style='text-align:center'>
+                                    <button onclick="sendCard()" class="btn btn-info mb-1">OK</button>
+                                    <select id="cost" class="form-control">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='card-body'>
+                            <textarea placeholder="Effet" id="effect" cols="30" rows="1" class="form-control"></textarea>
+                        </div>
+                        <div class='card-footer'>
+                            <div class='row'>
+                                <div class='col-7 form-inline'>
+                                    <input type="number" id="for" class="form-fixer mr-1 bg-danger border-danger">
+                                    <input type="number" id="dex" class="form-fixer mr-1 bg-success border-success">
+                                    <input type="number" id="int" class="form-fixer bg-primary border-primary">
+                                </div>
+                                <div class='col-5' style='text-align:center'>
+                                    <select id="copy" class="form-control">
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select> exemplaire
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/script.js"></script>
+<script src="js/cards.js"></script>
+</html>
