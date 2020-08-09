@@ -3,5 +3,6 @@
 require_once "classes/card.php";
 
 $cards = new Cards();
+$id = $_GET['id'];
 
-echo $cards->getCardsJSON();
+echo $cards->deleteCard($id);

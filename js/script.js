@@ -1,22 +1,44 @@
+let form = document.querySelector('#display').innerHTML;
+
 
 function display(cards)
 {
-    console.log(cards);
-    let ctx = document.querySelector("#display")
-    let tmp = ctx.innerHTML;
+    let ctx = document.querySelector('#display');
     ctx.innerHTML = "";
     
     cards.forEach(card => {
         ctx.innerHTML += getTemplate(card);
     });
-    ctx.innerHTML += tmp;
+    ctx.innerHTML += form;
+    getClasses();
+
+    document.querySelectorAll("[id^='card-'] > div").forEach(div => {
+        div.onclick = function() {
+            openModal(div.parentElement.id.replace('card-',''));
+        }
+    })
+    document.querySelectorAll("[id^='card-']").forEach(div => {
+        div.onmouseover = function() {
+            document.querySelector('#close-' + div.id.replace('card-', '')).style.display = "block";
+        }
+        div.onmouseout = function() {
+            document.querySelector('#close-' + div.id.replace('card-', '')).style.display = "none";
+        }
+    })
+    
+    document.querySelectorAll("[id^='close-']").forEach(btn => {
+        btn.onclick = function() {
+            deleteCard(btn.id.replace('close-', ''));
+        }
+    })
 }
 
 
 function getTemplate(card)
 {
     return  "<div class='col-3 mb-3'>" +
-                    "<div class='mb-3 card h-100 " + getColorFromStat(card.stat) + "'>" +
+                    "<div id='card-" + card.id + "' class='mb-3 card h-100 " + getColorFromStat(card.stat) + "'>" +
+                    '<button onclick="test()" id="close-' + card.id + '" class="bg-danger close" style="display: none;">X</button>' +
                         "<div class='card-header'><div class='row'><div class='col-10'><h5 class='card-title'>"+card.name+"</h5><h6 class='card-subtitle text-muted'>"+card.class+"</h6></div><div class='col-2' style='text-align:right'><span class='badge badge-secondary'>"+card.cost+"</span></div></div></div>" +
                         "<div class='card-body'>"+card.effect+"</div>" +
                         "<div class='card-footer'><div class='row'><div class='col-6'>" + prerequis(card.requirements) + "</div><div class='col-6' style='text-align:center'>"+card.copy+" exemplaire</div></div></div>" +
@@ -26,7 +48,7 @@ function getTemplate(card)
 
 function getColorFromStat(stat)
 {
-    return (stat == "FOR" ? "border-danger" : (stat == "DEX" ? "border-success" : (stat == "INT" ? "border-primary" : "border-light")));
+    return (stat == "FOR" ? "border-danger" : (stat == "DEX" ? "border-success" : (stat == "INT" ? "border-primary" : "border-dark")));
 }
 
 function prerequis(str)
@@ -46,6 +68,7 @@ function getClasses()
         {
             if(xhr.status == 200)
             {
+                classes = xhr.response;
                 setClasses(xhr.response)
             }
         }
@@ -53,41 +76,52 @@ function getClasses()
     xhr.send();
 }
 
-function setClasses(classes)
+function setClasses()
 {
     let ctx = document.querySelector("#class");
+    let ctx2 = document.querySelector("#classModify");
 
     classes.forEach(elem => {
         ctx.innerHTML += "<option value='" + elem.id + "'>" + elem.name + "</option>"
+        ctx2.innerHTML += "<option value='" + elem.id + "'>" + elem.name + "</option>"
     })
 }
 
-function sendCard()
+function openModal(id)
 {
-    let str = document.querySelector("#for").value;
-    let dex = document.querySelector("#dex").value;
-    let int = document.querySelector("#int").value;
+    let card = cards.find(elem => elem.id == id);
 
-    let max = Math.max(str, dex, int);
-    let stat;
-    if(max == str && max == dex && max == int)
-        stat = "ALL"
-    else if(max == str)
-        stat = "FOR"
-    else if(max == dex)
-        stat = "DEX"
-    else if(max == int)
-        stat == "INT"
+    let split = card.requirements.split('/');
+    let str = split[0];
+    let dex = split[1];
+    let int = split[2];
 
-    let card = {
-        name: document.querySelector("#name").value,
-        class: document.querySelector("#class").value,
-        cost: document.querySelector("#cost").value,
-        effect: document.querySelector("#effect").value,
-        stat: stat,
-        requirements: str + "/" + dex + "/" + int,
-        copy: document.querySelector("#copy").value,
+    let modal = document.querySelector("#cardModal");
+    modal.classList.remove("border-dark", "border-danger", "border-success", "border-primary");
+    switch(card.stat)
+    {
+        case "FOR":
+            modal.classList.add("border-danger");
+            break;
+        case "DEX":
+            modal.classList.add("border-success");
+            break;
+        case "INT":
+            modal.classList.add("border-primary");
+            break;
+        default:
+            modal.classList.add("border-dark");
+            break;
     }
 
-    console.log(card);
+    document.querySelector("#idModify").value = card.id;
+    document.querySelector("#nameModify").value = card.name;
+    document.querySelector("#costModify").value = card.cost;
+    document.querySelector("#classModify").value = classes.find(elem => elem.name == card.class).id;
+    document.querySelector("#effectModify").value = card.effect;
+    document.querySelector("#copyModify").value = card.copy;
+    document.querySelector("#forModify").value = str;
+    document.querySelector("#dexModify").value = dex;
+    document.querySelector("#intModify").value = int;
+    $("#modifyModal").modal('toggle');
 }

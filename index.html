@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/color.css">
     <style>
@@ -26,12 +29,20 @@
             border-radius: 5px;
             width: 27px;
         }
+
+        .close
+        {
+            font-weight: bold; 
+            width: 20px; 
+            border-radius: 5px; 
+            text-align: center; 
+            position: absolute;
+        }
     </style>
     <title>Card</title>
 </head>
 <body>
     <div class="container">
-        <nav></nav>
         <br>
         <div id="display" class="row">
             <div class="col-3 mb-3">
@@ -48,8 +59,7 @@
                                     </h6>
                                 </div>
                                 <div class='col-5' style='text-align:center'>
-                                    <button onclick="sendCard()" class="btn btn-info mb-1">OK</button>
-                                    <select id="cost" class="form-control">
+                                    <select id="cost" class="form-control mb-1">
                                         <option value="0">0</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -62,6 +72,7 @@
                                         <option value="9">9</option>
                                         <option value="10">10</option>
                                     </select>
+                                    <button onclick="sendCard()" class="btn btn-info">OK</button>
                                 </div>
                             </div>
                         </div>
@@ -89,6 +100,77 @@
             </div>
         </div>
     </div>
+      
+    <!-- Modal -->
+
+    <!-- Fail -->
+    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-danger">
+                <div class="modal-body" style="color: beige; font-weight: bold; text-align: center">
+                    Erreur lors de la création...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModal" aria-hidden="true">
+        <div class="modal-dialog" style="width: 300px;" role="document">
+            <div class="modal-content bg-danger">
+                    <div id="cardModal" class='card border-dark h-100'>
+                        <input type="hidden" id="idModify">
+                        <div class='card-header'>
+                            <div class='row'>
+                                <div class='col-7'>
+                                    <h5 class="card-title">
+                                        <input type="text" id="nameModify" class="form-control" placeholder="Nom">
+                                    </h5>
+                                    <h6 class='card-subtitle text-muted'>
+                                        <select class="form-control" id="classModify"></select>
+                                    </h6>
+                                </div>
+                                <div class='col-5' style='text-align:center'>
+                                    <select id="costModify" class="form-control mb-1">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                    <button onclick="modifyCard()" class="btn btn-info">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='card-body'>
+                            <textarea placeholder="Effet" id="effectModify" cols="30" rows="3" class="form-control"></textarea>
+                        </div>
+                        <div class='card-footer'>
+                            <div class='row'>
+                                <div class='col-7 form-inline'>
+                                    <input type="number" id="forModify" class="form-fixer mr-1 bg-danger border-danger">
+                                    <input type="number" id="dexModify" class="form-fixer mr-1 bg-success border-success">
+                                    <input type="number" id="intModify" class="form-fixer bg-primary border-primary">
+                                </div>
+                                <div class='col-5' style='text-align:center'>
+                                    <select id="copyModify" class="form-control">
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select> exemplaire
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="js/script.js"></script>
 <script src="js/cards.js"></script>
