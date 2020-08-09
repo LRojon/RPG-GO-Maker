@@ -12,8 +12,9 @@ class Card
     public $stat;
     public $cost;
     public $requirements;
+    public $rarity;
 
-    public function __construct($id, $name, $class, $effect, $copy, $stat, $cost, $requirements)
+    public function __construct($id, $name, $class, $effect, $copy, $stat, $cost, $requirements, $rarity)
     {
         $this->id = $id;
         $this->name = $name;
@@ -23,13 +24,14 @@ class Card
         $this->stat = $stat;
         $this->cost = $cost;
         $this->requirements = $requirements;
+        $this->rarity = $rarity;
     }
 
     public static function getFromJSON($json)
     {
         $data = json_decode($json);
 
-        return new Card($data->id, $data->name,$data->class,$data->effect,$data->copy,$data->stat,$data->cost,$data->requirements);
+        return new Card($data->id, $data->name,$data->class,$data->effect,$data->copy,$data->stat,$data->cost,$data->requirements, $data->rarity);
         
         /*$this->name = ;
         $this->class = $data['class'];

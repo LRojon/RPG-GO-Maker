@@ -1,6 +1,5 @@
 let form = document.querySelector('#display').innerHTML;
 
-
 function display(cards)
 {
     let ctx = document.querySelector('#display');
@@ -36,7 +35,7 @@ function display(cards)
 
 function getTemplate(card)
 {
-    return  "<div class='col-3 mb-3'>" +
+    return  "<div class='col-lg-3 col-sm-6 mb-3'>" +
                     "<div id='card-" + card.id + "' class='mb-3 card h-100 " + getColorFromStat(card.stat) + "'>" +
                     '<button onclick="test()" id="close-' + card.id + '" class="bg-danger close" style="display: none;">X</button>' +
                         "<div class='card-header'><div class='row'><div class='col-10'><h5 class='card-title'>"+card.name+"</h5><h6 class='card-subtitle text-muted'>"+card.class+"</h6></div><div class='col-2' style='text-align:right'><span class='badge badge-secondary'>"+card.cost+"</span></div></div></div>" +
