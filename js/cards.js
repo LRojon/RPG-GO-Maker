@@ -1,5 +1,6 @@
 let cards;
 let classes;
+let rarities;
 
 fill();
 
@@ -46,7 +47,8 @@ function sendCard()
         effect: document.querySelector("#effect").value ,
         stat: stat ,
         requirements: str + '/' + dex + '/' + int ,
-        copy: document.querySelector("#copy").value
+        copy: document.querySelector("#copy").value,
+        rarity: 1
     }
 
     console.log(JSON.stringify(card));
@@ -99,6 +101,7 @@ function modifyCard()
         class: document.querySelector("#classModify").value,
         stat: stat,
         requirements: str + "/" + dex + "/" + int,
+        rarity: 1
     }
 
     let xhr = new XMLHttpRequest();

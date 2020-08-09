@@ -48,12 +48,12 @@ class Card
 
         if($exist == true)
         {
-            $query = "UPDATE card SET `name`=:name, class=:class, effect=:effect, `copy`=:copy, stat=:stat, cost=:cost, requirements=:requirements WHERE id=:id";
+            $query = "UPDATE card SET `name`=:name, class=:class, effect=:effect, `copy`=:copy, stat=:stat, cost=:cost, requirements=:requirements, rarity=:rarity WHERE id=:id";
             return $dao->bdd->prepare($query)->execute((array)$this);
         }
         else
         {
-            $query = "INSERT INTO card(id, `name`,class,effect,`copy`,stat,cost,requirements) VALUES(:id, :name, :class, :effect, :copy, :stat, :cost, :requirements)";
+            $query = "INSERT INTO card(id, `name`,class,effect,`copy`,stat,cost,requirements,rarity) VALUES(:id, :name, :class, :effect, :copy, :stat, :cost, :requirements, :rarity)";
             return $dao->bdd->prepare($query)->execute((array)$this);
         }
     }
@@ -66,14 +66,14 @@ class Cards
 
     public function __construct()
     {
-        $query = "SELECT c.`id`, c.`name`,l.`name` class,c.`effect`,c.`copy`,c.`stat`,c.`cost`,c.`requirements` FROM `card` AS c JOIN class AS l ON c.class = l.id";
+        $query = "SELECT c.`id`, c.`name`,l.`name` class,c.`effect`,c.`copy`,c.`stat`,c.`cost`,c.`requirements`,c.`rarity` FROM `card` AS c JOIN class AS l ON c.class = l.id";
 
         $dao = new DAO();
         $res = $dao->query($query);
 
         while($card = $res->fetch())
         {
-            $tmp = new Card($card['id'], $card['name'], $card['class'], $card['effect'], $card['copy'], $card['stat'], $card['cost'], $card['requirements']);
+            $tmp = new Card($card['id'], $card['name'], $card['class'], $card['effect'], $card['copy'], $card['stat'], $card['cost'], $card['requirements'], $card['rarity']);
             array_push($this->array, $tmp);
         }
     }
