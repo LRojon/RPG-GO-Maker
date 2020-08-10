@@ -1,0 +1,52 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
+input.form-fixer 
+{
+    color: beige;
+    font-weight: bold;
+    text-align: center;
+    border: solid;
+    border-radius: 5px;
+    width: 27px;
+}
+
+.close
+{
+    font-weight: bold; 
+    width: 20px; 
+    border-radius: 5px; 
+    text-align: center; 
+    position: absolute;
+}
+
+.radio-toolbar input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+.radio-toolbar label {
+    display: inline-block;
+    border: 3px solid #000000;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 2px;
+}
+.radio-toolbar input[type="radio"]:checked + label {
+    border: 3px solid #008800;
+}
+/*.radio-toolbar input[type="radio"]:focus + label {
+    border: 3px dashed #448844;
+}*/
+
+.radio-toolbar label:hover {
+    border-color: #448844;
+  }

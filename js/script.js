@@ -97,8 +97,7 @@ function getRarity()
                 let ctx = document.querySelector("#rarity");
                 let ctx2 = document.querySelector("#rarityModify");
                 rarities.forEach(elem => {
-                    console.log(ctx.innerHTML)
-                    ctx.innerHTML += "<option value='" + elem.id + "' style='background-color: #"+ elem.color +"></option>";
+                    ctx.innerHTML += "<input type='radio' name='rarity' id='" + elem.id + "'><label for='" + elem.id + "' style='background-color: #" + elem.color + "'></label>";
                 })
                 ctx2.innerHTML = ctx.innerHTML;
             }
@@ -106,7 +105,6 @@ function getRarity()
     }
     xhr.send();
 }
-console.log("change-")
 
 function setClasses()
 {

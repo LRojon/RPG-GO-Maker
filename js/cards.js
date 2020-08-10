@@ -2,6 +2,7 @@ let cards;
 let classes;
 let rarities;
 
+console.log('change')
 fill();
 
 function fill()
@@ -24,6 +25,8 @@ function fill()
 
 function sendCard()
 {
+    console.log("id: " + document.querySelector("input[type='radio']:checked").id)
+
     let str = document.querySelector("#for").value;
     let dex = document.querySelector("#dex").value;
     let int = document.querySelector("#int").value;
