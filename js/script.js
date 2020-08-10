@@ -2,12 +2,11 @@ let form = document.querySelector('#display').innerHTML;
 
 function display(cards)
 {
-    getRarity();
     let ctx = document.querySelector('#display');
     ctx.innerHTML = "";
     
+    getRarity();
     cards.forEach(card => {
-        card.rarity = rarities.find(elem => elem.id == card.rarity).name
         ctx.innerHTML += getTemplate(card);
     });
     ctx.innerHTML += form;
@@ -40,11 +39,16 @@ function getTemplate(card)
     return  "<div class='col-lg-3 col-sm-6 mb-3'>" +
                     "<div id='card-" + card.id + "' class='mb-3 card h-100 " + getColorFromStat(card.stat) + "'>" +
                     '<button onclick="test()" id="close-' + card.id + '" class="bg-danger close" style="display: none;">X</button>' +
-                        "<div class='card-header'><div class='row'><div class='col-10'><h5 class='card-title'>"+card.name+"</h5><h6 class='card-subtitle text-muted'>"+card.class+" - " + card.rarity + "</h6></div><div class='col-2' style='text-align:right'><span class='badge badge-secondary'>"+card.cost+"</span></div></div></div>" +
+                        "<div class='card-header'><div class='row'><div class='col-10'><h5 class='card-title'>"+card.name+"</h5><h6 class='card-subtitle text-muted'>"+card.class.name+" - " + getDisplayRarity(card.rarity) + "</h6></div><div class='col-2' style='text-align:right'><span class='badge badge-secondary'>"+card.cost+"</span></div></div></div>" +
                         "<div class='card-body'>"+card.effect+"</div>" +
                         "<div class='card-footer'><div class='row'><div class='col-6'>" + prerequis(card.requirements) + "</div><div class='col-6' style='text-align:center'>"+card.copy+" exemplaire</div></div></div>" +
                 "</div>" +
             "</div>"
+}
+
+function getDisplayRarity(rarity)
+{
+    return "<span class='badge' style='background-color: #" + rarity.color + "'>" + rarity.name + "</span>";
 }
 
 function getColorFromStat(stat)
@@ -81,19 +85,28 @@ function getRarity()
 {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "http://card.alwaysdata.net/api/getRarity.php");
-    xhr.responseType = "json";
+    //xhr.responseType = "json";
     xhr.onreadystatechange = function()
     {
         if(xhr.readyState == 4)
         {
             if(xhr.status == 200)
             {
-                rarities = xhr.response;
+                rarities = JSON.parse(xhr.responseText);
+
+                let ctx = document.querySelector("#rarity");
+                let ctx2 = document.querySelector("#rarityModify");
+                rarities.forEach(elem => {
+                    console.log(ctx.innerHTML)
+                    ctx.innerHTML += "<option value='" + elem.id + "' style='background-color: #"+ elem.color +"></option>";
+                })
+                ctx2.innerHTML = ctx.innerHTML;
             }
         }
     }
     xhr.send();
 }
+console.log("change-")
 
 function setClasses()
 {
@@ -142,5 +155,6 @@ function openModal(id)
     document.querySelector("#forModify").value = str;
     document.querySelector("#dexModify").value = dex;
     document.querySelector("#intModify").value = int;
+    document.querySelector("#rarityModify").value = card.rarity.id;
     $("#modifyModal").modal('toggle');
 }

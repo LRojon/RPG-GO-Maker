@@ -1,6 +1,8 @@
 <?php
 
 require_once "tools.php";
+require_once "class.php";
+require_once "rarity.php";
 
 class Card
 {
@@ -32,14 +34,6 @@ class Card
         $data = json_decode($json);
 
         return new Card($data->id, $data->name,$data->class,$data->effect,$data->copy,$data->stat,$data->cost,$data->requirements, $data->rarity);
-        
-        /*$this->name = ;
-        $this->class = $data['class'];
-        $this->effect = $data['effect'];
-        $this->copy = $data['copy'];
-        $this->stat = $data['stat'];
-        $this->cost = $data['cost'];
-        $this->requirements = $data['requirements'];*/
     }
 
     public function save($exist)
@@ -49,24 +43,46 @@ class Card
         if($exist == true)
         {
             $query = "UPDATE card SET `name`=:name, class=:class, effect=:effect, `copy`=:copy, stat=:stat, cost=:cost, requirements=:requirements, rarity=:rarity WHERE id=:id";
-            return $dao->bdd->prepare($query)->execute((array)$this);
+            return $dao->bdd->prepare($query)->execute(array(
+                ":id" => $this->id,
+                ":name" => $this->name,
+                ":class" => $this->class->id,
+                ":effect" => $this->effect,
+                ":copy" => $this->copy,
+                ":stat" => $this->stat,
+                ":cost" => $this->cost,
+                ":requirements" => $this->requirements,
+                ":rarity" => $this->rarity->id,
+            ));
         }
         else
         {
             $query = "INSERT INTO card(id, `name`,class,effect,`copy`,stat,cost,requirements,rarity) VALUES(:id, :name, :class, :effect, :copy, :stat, :cost, :requirements, :rarity)";
-            return $dao->bdd->prepare($query)->execute((array)$this);
+            return $dao->bdd->prepare($query)->execute(array(
+                ":id" => $this->id,
+                ":name" => $this->name,
+                ":class" => $this->class->id,
+                ":effect" => $this->effect,
+                ":copy" => $this->copy,
+                ":stat" => $this->stat,
+                ":cost" => $this->cost,
+                ":requirements" => $this->requirements,
+                ":rarity" => $this->rarity->id,
+            ));
         }
     }
 }
 
 class Cards
 {
-
     private $array = array();
 
     public function __construct()
     {
-        $query = "SELECT c.`id`, c.`name`,l.`name` class,c.`effect`,c.`copy`,c.`stat`,c.`cost`,c.`requirements`,c.`rarity` FROM `card` AS c JOIN class AS l ON c.class = l.id";
+        $rarities = new Rarities();
+        $jobs = new Jobs();
+
+        $query = "SELECT * FROM card";
 
         $dao = new DAO();
         $res = $dao->query($query);
@@ -75,6 +91,14 @@ class Cards
         {
             $tmp = new Card($card['id'], $card['name'], $card['class'], $card['effect'], $card['copy'], $card['stat'], $card['cost'], $card['requirements'], $card['rarity']);
             array_push($this->array, $tmp);
+        }
+
+        for ($i=0; $i < count($this->array); $i++) 
+        {
+            if($jobs->getFirstById($this->array[$i]->class) != false)
+                $this->array[$i]->class = $jobs->getFirstById($this->array[$i]->class);
+            if($rarities->getFirstById($this->array[$i]->rarity) != false)
+                $this->array[$i]->rarity = $rarities->getFirstById($this->array[$i]->rarity);
         }
     }
 

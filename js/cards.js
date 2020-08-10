@@ -31,27 +31,30 @@ function sendCard()
     let max = Math.max(str, dex, int);
     let stat;
     if(max == str && max == dex && max == int)
-        stat = "ALL"
+        stat = "ALL";
     else if(max == str)
-        stat = "FOR"
+        stat = "FOR";
     else if(max == dex)
-        stat = "DEX"
+        stat = "DEX";
     else if(max == int)
-        stat = "INT"
+        stat = "INT";
 
+        console.log(rarities.find(elem => elem.id == 1));
+        console.log(rarities.find(elem => elem.id == 2));
+        console.log(rarities.find(elem => elem.id == 3));
+    
     let card = {
-        id: parseInt(cards[cards.length - 1].id) + 1,
-        name: document.querySelector("#name").value ,
-        class: document.querySelector("#class").value,
-        cost: document.querySelector("#cost").value,
-        effect: document.querySelector("#effect").value ,
-        stat: stat ,
-        requirements: str + '/' + dex + '/' + int ,
-        copy: document.querySelector("#copy").value,
-        rarity: 1
+        id:             parseInt(cards[cards.length - 1].id) + 1,
+        name:           document.querySelector("#name").value ,
+        class:          classes.find(elem => elem.id == document.querySelector("#class").value),
+        cost:           document.querySelector("#cost").value,
+        effect:         document.querySelector("#effect").value ,
+        stat:           stat ,
+        requirements:   str + '/' + dex + '/' + int ,
+        copy:           document.querySelector("#copy").value,
+        rarity:         rarities.find(elem => elem.id == 1)
     }
-
-    console.log(JSON.stringify(card));
+    console.log(card)
 
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://card.alwaysdata.net/api/setCard.php?data=' + JSON.stringify(card));
@@ -92,17 +95,18 @@ function modifyCard()
         stat = "INT"
 
     let card = {
-        id: document.querySelector("#idModify").value,
-        name: document.querySelector("#nameModify").value,
-        cost: document.querySelector("#costModify").value,
-        copy: document.querySelector("#copyModify").value,
-        effect: document.querySelector("#effectModify").value,
-        effect: document.querySelector("#effectModify").value,
-        class: document.querySelector("#classModify").value,
-        stat: stat,
-        requirements: str + "/" + dex + "/" + int,
-        rarity: 1
+        id:             document.querySelector("#idModify").value,
+        name:           document.querySelector("#nameModify").value,
+        cost:           document.querySelector("#costModify").value,
+        copy:           document.querySelector("#copyModify").value,
+        effect:         document.querySelector("#effectModify").value,
+        effect:         document.querySelector("#effectModify").value,
+        class:          document.querySelector("#classModify").value,
+        stat:           stat,
+        requirements:   str + "/" + dex + "/" + int,
+        rarity:         document.querySelector("#rarityModify").value,
     }
+    console.log(card);
 
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "http://card.alwaysdata.net/api/setCard.php?data=" + JSON.stringify(card));
