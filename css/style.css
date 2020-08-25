@@ -35,10 +35,10 @@ input.form-fixer
 }
 .radio-toolbar label {
     display: inline-block;
-    border: 3px solid #000000;
+    /*border: 3px solid #000000;*/
+    border: 3px solid transparent;
     border-radius: 5px;
-    padding: 10px;
-    margin-left: 2px;
+    padding: 10.5px;
 }
 .radio-toolbar input[type="radio"]:checked + label {
     border: 3px solid #008800;
@@ -49,4 +49,13 @@ input.form-fixer
 
 .radio-toolbar label:hover {
     border-color: #448844;
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown>.dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+      pointer-events: none;
   }

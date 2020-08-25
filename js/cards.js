@@ -2,13 +2,20 @@ let cards;
 let classes;
 let rarities;
 
-console.log('change')
 fill();
 
-function fill()
+function fill(filter = null, value = null)
 {
+    let url;
+    if(filter == null && value == null)
+        url = "http://card.lrojon.fr/api/getCards.php";
+    else
+        url = "http://card.lrojon.fr/api/getCards.php?sort=" + filter + "&data=" + value;
+    
+        console.log(url);
+
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://card.alwaysdata.net/api/getCards.php");
+    xhr.open("GET", url);
     xhr.responseType = "json";
     xhr.onreadystatechange = function(){
         if(xhr.readyState == 4)
@@ -16,6 +23,8 @@ function fill()
             if(xhr.status == 200)
             {
                 cards = xhr.response;
+                getClasses();
+                getRarity();
                 display(xhr.response);
             }
         }
@@ -25,7 +34,6 @@ function fill()
 
 function sendCard()
 {
-    console.log("id: " + document.querySelector("input[type='radio']:checked").id)
 
     let str = document.querySelector("#for").value;
     let dex = document.querySelector("#dex").value;
@@ -41,10 +49,6 @@ function sendCard()
         stat = "DEX";
     else if(max == int)
         stat = "INT";
-
-        console.log(rarities.find(elem => elem.id == 1));
-        console.log(rarities.find(elem => elem.id == 2));
-        console.log(rarities.find(elem => elem.id == 3));
     
     let card = {
         id:             parseInt(cards[cards.length - 1].id) + 1,
@@ -55,12 +59,12 @@ function sendCard()
         stat:           stat ,
         requirements:   str + '/' + dex + '/' + int ,
         copy:           document.querySelector("#copy").value,
-        rarity:         rarities.find(elem => elem.id == 1)
+        rarity:         rarities.find(elem => elem.id == document.querySelector("input[name='rarity']:checked").id)
     }
     console.log(card)
 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://card.alwaysdata.net/api/setCard.php?data=' + JSON.stringify(card));
+    xhr.open('GET', 'http://card.lrojon.fr/api/setCard.php?data=' + JSON.stringify(card));
     xhr.onreadystatechange = function(){
         if(xhr.readyState == 4)
         {
@@ -104,15 +108,14 @@ function modifyCard()
         copy:           document.querySelector("#copyModify").value,
         effect:         document.querySelector("#effectModify").value,
         effect:         document.querySelector("#effectModify").value,
-        class:          document.querySelector("#classModify").value,
+        class:          classes.find(elem => elem.id == document.querySelector("#classModify").value),
         stat:           stat,
         requirements:   str + "/" + dex + "/" + int,
-        rarity:         document.querySelector("#rarityModify").value,
+        rarity:         rarities.find(elem => elem.id == document.querySelector("input[name='rarityModify']:checked").id.replace('modify-', '')),
     }
-    console.log(card);
 
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://card.alwaysdata.net/api/setCard.php?data=" + JSON.stringify(card));
+    xhr.open("GET", "http://card.lrojon.fr/api/setCard.php?data=" + JSON.stringify(card));
     xhr.onreadystatechange = function(){
         if(xhr.readyState == 4)
         {
@@ -129,7 +132,7 @@ function modifyCard()
 function deleteCard(id)
 {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://card.alwaysdata.net/api/deleteCard.php?id=" + id);
+    xhr.open("GET", "http://card.lrojon.fr/api/deleteCard.php?id=" + id);
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4)
         {
