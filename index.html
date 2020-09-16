@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <title>Card</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                    <a class="navbar-brand">
+                        <img src="favicon.png" width="30" height="30" alt="">
+                        Card Maker
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                  
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Filtrer par ...
+                                </a>
+                                <ul class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="">Tout</a></li>
+                                    <li class="dropdown-divider"></li>
+                                    <select id="statSearch" class="form-control">
+                                        <option value="-1">Stat</option>
+                                        <option value="FOR">FOR</option>
+                                        <option value="DEX">DEX</option>
+                                        <option value="INT">INT</option>
+                                    </select>
+                                    <li class="dropdown-divider"></li>
+                                    <select id="classSearch" class="form-control">
+                                        <option value="-1">Classes</option>
+                                    </select>
+                                    <li class="dropdown-divider"></li>
+                                    <select id="raritySearch" class="form-control">
+                                    </select>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Trier par ...
+                                </a>
+                                <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" id="nameSort" name="name" >Nom</a>
+                                    <a class="dropdown-item" id="costSort" name="cost" >Coût</a>
+                                    <a class="dropdown-item" id="copySort" name="copy" >Exemplaire</a>
+                                    <a class="dropdown-item" id="classSort" name="class" >Classe</a>
+                                    <a class="dropdown-item" id="raritySort" name="rarity" >Rareté</a>
+                                    <a class="dropdown-item" id="statSort" name="stat" >Stat</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="form-inline my-2 my-lg-0">
+                            <input type="text" id="nameSearch" class="form-control mr-sm-2" placeholder="Chercher par nom">
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div id="display" class="row">
+            <div class="col-lg-3 col-sm-6 mb-3">
+                <div class="card-deck ">
+                    <div onclick="addCard()" class='card border-dark h-100 text-center'>
+                        <div class="card-header">
+                            <h5>Ajouter une carte</h5>
+                        </div>
+                        <i id="plus" style="height: 100%;" class="fa fa-10x fa-plus" aria-hidden="true"></i>
+                        <div class="card-footer">
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+    <!-- Modal -->
+
+    <!-- Fail -->
+    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="failModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-danger">
+                <div class="modal-body" style="color: beige; font-weight: bold; text-align: center">
+                    Erreur lors de la création...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModal" aria-hidden="true">
+        <div class="modal-dialog" style="width: 500px;" role="document">
+            <div class="modal-content bg-danger">
+                    <div id="cardModal" class='card border-dark h-100'>
+                        <input type="hidden" id="idModify">
+                        <div class='card-header'>
+                            <div class='row'>
+                                <div class='col-7'>
+                                    <h5 class="card-title">
+                                        <input type="text" id="nameModify" class="form-control" placeholder="Nom">
+                                    </h5>
+                                    <h6 class='card-subtitle text-muted'>
+                                        <div class="form-inline">
+                                            <select class="form-control" style="width: 50%;" id="classModify"></select>
+                                            <select class="form-control" id="godModify"></select>
+                                        </div>
+                                    </h6>
+                                </div>
+                                <div class='col-5' style='text-align:center'>
+                                    <select id="costModify" class="form-control mb-1">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                    <button onclick="modifyCard()" class="btn btn-info">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='card-body'>
+                            <textarea placeholder="Effet" id="effectModify" cols="30" rows="3" class="form-control"></textarea>
+                        </div>
+                        <div class='card-footer'>
+                            <div class='row'>
+                                <div class='col-7 form-inline'>
+                                    <input type="number" id="forModify" class="form-fixer mb-1 mr-1 bg-danger border-danger">
+                                    <input type="number" id="dexModify" class="form-fixer mb-1 mr-1 bg-success border-success">
+                                    <input type="number" id="intModify" class="form-fixer mb-1 bg-primary border-primary">
+                                    <div id="rarityModify" class="radio-toolbar"></div>
+                                </div>
+                                <div class='col-5' style='text-align:center'>
+                                    <select id="copyModify" class="form-control">
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select> exemplaire
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="js/script.js"></script>
+<script src="js/cards.js"></script>
+</html>
